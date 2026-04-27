@@ -2,12 +2,16 @@ import React, { useState, useEffect } from 'react';
 
 const EditMaintenanceForm = ({ record, onUpdate, onCancel }) => {
   const [form, setForm] = useState({
-    plate: record.plate,
-    part: record.part,
-    date: record.date,
-    km: record.km.toString(),
-    cost: record.cost.toString(),
-    type: record.type
+    plate: record.plate || '',
+    part: record.part || '',
+    date: record.date || '',
+    km: record.km?.toString() || '',
+    cost: record.cost?.toString() || '',
+    type: record.type || '',
+    brand: record.brand || '',
+    invoiceNo: record.invoiceNo || '',
+    status: record.status || '',
+    nextServiceKm: record.nextServiceKm?.toString() || ''
   });
 
   const [errors, setErrors] = useState({});
@@ -17,12 +21,16 @@ const EditMaintenanceForm = ({ record, onUpdate, onCancel }) => {
 
   useEffect(() => {
     setForm({
-      plate: record.plate,
-      part: record.part,
-      date: record.date,
-      km: record.km.toString(),
-      cost: record.cost.toString(),
-      type: record.type
+      plate: record.plate || '',
+      part: record.part || '',
+      date: record.date || '',
+      km: record.km?.toString() || '',
+      cost: record.cost?.toString() || '',
+      type: record.type || '',
+      brand: record.brand || '',
+      invoiceNo: record.invoiceNo || '',
+      status: record.status || '',
+      nextServiceKm: record.nextServiceKm?.toString() || ''
     });
     setErrors({});
   }, [record]);
@@ -66,14 +74,31 @@ const EditMaintenanceForm = ({ record, onUpdate, onCancel }) => {
     return '';
   };
 
+  const validateBrand = (value) => {
+    if (!value) return 'Araç markası seçilmelidir';
+    return '';
+  };
+
+  const validateStatus = (value) => {
+    if (!value) return 'İşlem durumu seçilmelidir';
+    return '';
+  };
+
+  const validateNextServiceKm = (value) => {
+    if (!value) return 'Sonraki bakım hedefi girilmelidir';
+    const num = parseInt(value);
+    if (isNaN(num) || num < 0 || num > 9999999) return 'Geçerli bir kilometre giriniz';
+    return '';
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     let newValue = value;
 
-    if (name === 'km' || name === 'cost') {
+    if (name === 'km' || name === 'cost' || name === 'nextServiceKm') {
       // Sadece sayı ve nokta (cost için) kabul et
       newValue = value.replace(/[^0-9.]/g, '');
-      if (name === 'km') newValue = newValue.replace(/\./g, ''); // km için nokta yok
+      if (name === 'km' || name === 'nextServiceKm') newValue = newValue.replace(/\./g, ''); // km için nokta yok
     }
 
     setForm({ ...form, [name]: newValue });
@@ -99,6 +124,15 @@ const EditMaintenanceForm = ({ record, onUpdate, onCancel }) => {
       case 'type':
         error = validateType(newValue);
         break;
+      case 'brand':
+        error = validateBrand(newValue);
+        break;
+      case 'status':
+        error = validateStatus(newValue);
+        break;
+      case 'nextServiceKm':
+        error = validateNextServiceKm(newValue);
+        break;
       default:
         break;
     }
@@ -112,7 +146,10 @@ const EditMaintenanceForm = ({ record, onUpdate, onCancel }) => {
            form.date &&
            form.km &&
            form.cost &&
-           form.type;
+           form.type &&
+           form.brand &&
+           form.status &&
+           form.nextServiceKm;
   };
 
   const handleSubmit = (e) => {
@@ -121,14 +158,16 @@ const EditMaintenanceForm = ({ record, onUpdate, onCancel }) => {
     onUpdate(record.id, {
       ...form,
       km: parseInt(form.km),
-      cost: parseFloat(form.cost)
+      cost: parseFloat(form.cost),
+      nextServiceKm: parseInt(form.nextServiceKm)
     });
   };
 
   return (
     <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-md">
       <h2 className="text-xl font-bold mb-4">Bakım Kaydını Düzenle</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {/* Row 1 */}
         <div>
           <input
             type="text"
@@ -142,6 +181,37 @@ const EditMaintenanceForm = ({ record, onUpdate, onCancel }) => {
           />
           {errors.plate && <p className="text-red-500 text-sm mt-1">{errors.plate}</p>}
         </div>
+        <div>
+          <select
+            name="brand"
+            value={form.brand}
+            onChange={handleChange}
+            className="border p-2 rounded w-full"
+            required
+          >
+            <option value="">Araç Markası Seçin</option>
+            <option value="volvo">Volvo</option>
+            <option value="audi">Audi</option>
+            <option value="volkswagen">Volkswagen</option>
+            <option value="peugeot">Peugeot</option>
+            <option value="skoda">Skoda</option>
+            <option value="other">Diğer</option>
+          </select>
+          {errors.brand && <p className="text-red-500 text-sm mt-1">{errors.brand}</p>}
+        </div>
+        <div>
+          <input
+            type="text"
+            name="invoiceNo"
+            placeholder="Fatura/İş Emri No (İsteğe bağlı)"
+            value={form.invoiceNo}
+            onChange={(e) => setForm({ ...form, invoiceNo: e.target.value })}
+            maxLength="30"
+            className="border p-2 rounded w-full"
+          />
+        </div>
+
+        {/* Row 2 */}
         <div>
           <input
             type="text"
@@ -169,6 +239,24 @@ const EditMaintenanceForm = ({ record, onUpdate, onCancel }) => {
           {errors.date && <p className="text-red-500 text-sm mt-1">{errors.date}</p>}
         </div>
         <div>
+          <select
+            name="type"
+            value={form.type}
+            onChange={handleChange}
+            className="border p-2 rounded w-full"
+            required
+          >
+            <option value="">İşlem Türü Seçin</option>
+            <option value="mekanik">Mekanik</option>
+            <option value="periyodik">Periyodik Bakım</option>
+            <option value="elektrik">Elektrik</option>
+            <option value="diger">Diğer</option>
+          </select>
+          {errors.type && <p className="text-red-500 text-sm mt-1">{errors.type}</p>}
+        </div>
+
+        {/* Row 3 */}
+        <div>
           <input
             type="text"
             name="km"
@@ -194,18 +282,32 @@ const EditMaintenanceForm = ({ record, onUpdate, onCancel }) => {
         </div>
         <div>
           <select
-            name="type"
-            value={form.type}
+            name="status"
+            value={form.status}
             onChange={handleChange}
             className="border p-2 rounded w-full"
             required
           >
-            <option value="mekanik">Mekanik</option>
-            <option value="periyodik">Periyodik Bakım</option>
-            <option value="elektrik">Elektrik</option>
-            <option value="diger">Diğer</option>
+            <option value="">İşlem Durumu Seçin</option>
+            <option value="tamamlandi">Tamamlandı</option>
+            <option value="islemde">İşlemde</option>
+            <option value="parca_bekliyor">Parça Bekliyor</option>
           </select>
-          {errors.type && <p className="text-red-500 text-sm mt-1">{errors.type}</p>}
+          {errors.status && <p className="text-red-500 text-sm mt-1">{errors.status}</p>}
+        </div>
+
+        {/* Row 4 */}
+        <div>
+          <input
+            type="text"
+            name="nextServiceKm"
+            placeholder="Sonraki Bakım Hedefi (km)"
+            value={form.nextServiceKm}
+            onChange={handleChange}
+            className="border p-2 rounded w-full"
+            required
+          />
+          {errors.nextServiceKm && <p className="text-red-500 text-sm mt-1">{errors.nextServiceKm}</p>}
         </div>
       </div>
       <div className="mt-4 flex space-x-2">
