@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const AddMaintenanceForm = ({ onAdd }) => {
+const AddMaintenanceForm = ({ onAdd, darkMode }) => {
   const [form, setForm] = useState({
     plate: '',
     part: '',
@@ -167,8 +167,8 @@ const AddMaintenanceForm = ({ onAdd }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-md">
-      <h2 className="text-xl font-bold mb-4">Yeni Bakım Kaydı Ekle</h2>
+    <form onSubmit={handleSubmit} className={`${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} p-6 rounded-lg shadow-md border`}>
+      <h2 className={`text-xl font-bold mb-4 ${darkMode ? 'text-white' : 'text-gray-900'}`}>Yeni Bakım Kaydı Ekle</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {/* Row 1 */}
         <div>
@@ -179,7 +179,7 @@ const AddMaintenanceForm = ({ onAdd }) => {
             value={form.plate}
             onChange={handleChange}
             maxLength="15"
-            className="border p-2 rounded w-full"
+            className={`border p-2 rounded w-full ${darkMode ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400' : 'bg-white border-gray-300'}`}
             required
           />
           {errors.plate && <p className="text-red-500 text-sm mt-1">{errors.plate}</p>}
@@ -189,7 +189,7 @@ const AddMaintenanceForm = ({ onAdd }) => {
             name="brand"
             value={form.brand}
             onChange={handleChange}
-            className="border p-2 rounded w-full"
+            className={`border p-2 rounded w-full ${darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300'}`}
             required
           >
             <option value="">Araç Markası Seçin</option>
@@ -208,9 +208,9 @@ const AddMaintenanceForm = ({ onAdd }) => {
             name="invoiceNo"
             placeholder="Fatura/İş Emri No (İsteğe bağlı)"
             value={form.invoiceNo}
-            onChange={(e) => setForm({ ...form, invoiceNo: e.target.value })}
-            maxLength="30"
-            className="border p-2 rounded w-full"
+            onChange={(e) => setForm({ ...form, invoiceNo: e.target.value.slice(0, 20) })}
+            maxLength="20"
+            className={`border p-2 rounded w-full ${darkMode ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400' : 'bg-white border-gray-300'}`}
           />
         </div>
 
@@ -223,7 +223,7 @@ const AddMaintenanceForm = ({ onAdd }) => {
             value={form.part}
             onChange={handleChange}
             maxLength="50"
-            className="border p-2 rounded w-full"
+            className={`border p-2 rounded w-full ${darkMode ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400' : 'bg-white border-gray-300'}`}
             required
           />
           {errors.part && <p className="text-red-500 text-sm mt-1">{errors.part}</p>}
@@ -236,7 +236,7 @@ const AddMaintenanceForm = ({ onAdd }) => {
             onChange={handleChange}
             min={minDate}
             max={today}
-            className="border p-2 rounded w-full"
+            className={`border p-2 rounded w-full ${darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300'}`}
             required
           />
           {errors.date && <p className="text-red-500 text-sm mt-1">{errors.date}</p>}
@@ -246,7 +246,7 @@ const AddMaintenanceForm = ({ onAdd }) => {
             name="type"
             value={form.type}
             onChange={handleChange}
-            className="border p-2 rounded w-full"
+            className={`border p-2 rounded w-full ${darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300'}`}
             required
           >
             <option value="">İşlem Türü Seçin</option>
@@ -266,7 +266,7 @@ const AddMaintenanceForm = ({ onAdd }) => {
             placeholder="Kilometre"
             value={form.km}
             onChange={handleChange}
-            className="border p-2 rounded w-full"
+            className={`border p-2 rounded w-full ${darkMode ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400' : 'bg-white border-gray-300'}`}
             required
           />
           {errors.km && <p className="text-red-500 text-sm mt-1">{errors.km}</p>}
@@ -278,7 +278,7 @@ const AddMaintenanceForm = ({ onAdd }) => {
             placeholder="Maliyet (TL)"
             value={form.cost}
             onChange={handleChange}
-            className="border p-2 rounded w-full"
+            className={`border p-2 rounded w-full ${darkMode ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400' : 'bg-white border-gray-300'}`}
             required
           />
           {errors.cost && <p className="text-red-500 text-sm mt-1">{errors.cost}</p>}
@@ -288,7 +288,7 @@ const AddMaintenanceForm = ({ onAdd }) => {
             name="status"
             value={form.status}
             onChange={handleChange}
-            className="border p-2 rounded w-full"
+            className={`border p-2 rounded w-full ${darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300'}`}
             required
           >
             <option value="">İşlem Durumu Seçin</option>
@@ -307,7 +307,7 @@ const AddMaintenanceForm = ({ onAdd }) => {
             placeholder="Sonraki Bakım Hedefi (km)"
             value={form.nextServiceKm}
             onChange={handleChange}
-            className="border p-2 rounded w-full"
+            className={`border p-2 rounded w-full ${darkMode ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400' : 'bg-white border-gray-300'}`}
             required
           />
           {errors.nextServiceKm && <p className="text-red-500 text-sm mt-1">{errors.nextServiceKm}</p>}
@@ -316,7 +316,7 @@ const AddMaintenanceForm = ({ onAdd }) => {
       <button
         type="submit"
         disabled={!isFormValid()}
-        className={`mt-4 px-4 py-2 rounded ${isFormValid() ? 'bg-blue-500 text-white hover:bg-blue-600' : 'bg-gray-400 text-gray-700 cursor-not-allowed'}`}
+        className={`mt-4 px-4 py-2 rounded ${isFormValid() ? `${darkMode ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-blue-500 text-white hover:bg-blue-600'}` : 'bg-gray-400 text-gray-700 cursor-not-allowed'}`}
       >
         Ekle
       </button>

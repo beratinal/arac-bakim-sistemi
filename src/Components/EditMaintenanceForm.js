@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const EditMaintenanceForm = ({ record, onUpdate, onCancel }) => {
+const EditMaintenanceForm = ({ record, onUpdate, onCancel, darkMode }) => {
   const [form, setForm] = useState({
     plate: record.plate || '',
     part: record.part || '',
@@ -164,8 +164,8 @@ const EditMaintenanceForm = ({ record, onUpdate, onCancel }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-md">
-      <h2 className="text-xl font-bold mb-4">Bakım Kaydını Düzenle</h2>
+    <form onSubmit={handleSubmit} className={`${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} p-6 rounded-lg shadow-md border`}>
+      <h2 className={`text-xl font-bold mb-4 ${darkMode ? 'text-white' : 'text-gray-900'}`}>Bakım Kaydını Düzenle</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {/* Row 1 */}
         <div>
@@ -176,7 +176,7 @@ const EditMaintenanceForm = ({ record, onUpdate, onCancel }) => {
             value={form.plate}
             onChange={handleChange}
             maxLength="15"
-            className="border p-2 rounded w-full"
+            className={`border p-2 rounded w-full ${darkMode ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400' : 'bg-white border-gray-300'}`}
             required
           />
           {errors.plate && <p className="text-red-500 text-sm mt-1">{errors.plate}</p>}
@@ -186,7 +186,7 @@ const EditMaintenanceForm = ({ record, onUpdate, onCancel }) => {
             name="brand"
             value={form.brand}
             onChange={handleChange}
-            className="border p-2 rounded w-full"
+            className={`border p-2 rounded w-full ${darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300'}`}
             required
           >
             <option value="">Araç Markası Seçin</option>
@@ -205,9 +205,9 @@ const EditMaintenanceForm = ({ record, onUpdate, onCancel }) => {
             name="invoiceNo"
             placeholder="Fatura/İş Emri No (İsteğe bağlı)"
             value={form.invoiceNo}
-            onChange={(e) => setForm({ ...form, invoiceNo: e.target.value })}
-            maxLength="30"
-            className="border p-2 rounded w-full"
+            onChange={(e) => setForm({ ...form, invoiceNo: e.target.value.slice(0, 20) })}
+            maxLength="20"
+            className={`border p-2 rounded w-full ${darkMode ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400' : 'bg-white border-gray-300'}`}
           />
         </div>
 
@@ -220,7 +220,7 @@ const EditMaintenanceForm = ({ record, onUpdate, onCancel }) => {
             value={form.part}
             onChange={handleChange}
             maxLength="50"
-            className="border p-2 rounded w-full"
+            className={`border p-2 rounded w-full ${darkMode ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400' : 'bg-white border-gray-300'}`}
             required
           />
           {errors.part && <p className="text-red-500 text-sm mt-1">{errors.part}</p>}
@@ -233,7 +233,7 @@ const EditMaintenanceForm = ({ record, onUpdate, onCancel }) => {
             onChange={handleChange}
             min={minDate}
             max={today}
-            className="border p-2 rounded w-full"
+            className={`border p-2 rounded w-full ${darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300'}`}
             required
           />
           {errors.date && <p className="text-red-500 text-sm mt-1">{errors.date}</p>}
@@ -243,7 +243,7 @@ const EditMaintenanceForm = ({ record, onUpdate, onCancel }) => {
             name="type"
             value={form.type}
             onChange={handleChange}
-            className="border p-2 rounded w-full"
+            className={`border p-2 rounded w-full ${darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300'}`}
             required
           >
             <option value="">İşlem Türü Seçin</option>
@@ -263,7 +263,7 @@ const EditMaintenanceForm = ({ record, onUpdate, onCancel }) => {
             placeholder="Kilometre"
             value={form.km}
             onChange={handleChange}
-            className="border p-2 rounded w-full"
+            className={`border p-2 rounded w-full ${darkMode ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400' : 'bg-white border-gray-300'}`}
             required
           />
           {errors.km && <p className="text-red-500 text-sm mt-1">{errors.km}</p>}
@@ -275,7 +275,7 @@ const EditMaintenanceForm = ({ record, onUpdate, onCancel }) => {
             placeholder="Maliyet (TL)"
             value={form.cost}
             onChange={handleChange}
-            className="border p-2 rounded w-full"
+            className={`border p-2 rounded w-full ${darkMode ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400' : 'bg-white border-gray-300'}`}
             required
           />
           {errors.cost && <p className="text-red-500 text-sm mt-1">{errors.cost}</p>}
@@ -285,7 +285,7 @@ const EditMaintenanceForm = ({ record, onUpdate, onCancel }) => {
             name="status"
             value={form.status}
             onChange={handleChange}
-            className="border p-2 rounded w-full"
+            className={`border p-2 rounded w-full ${darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300'}`}
             required
           >
             <option value="">İşlem Durumu Seçin</option>
@@ -304,7 +304,7 @@ const EditMaintenanceForm = ({ record, onUpdate, onCancel }) => {
             placeholder="Sonraki Bakım Hedefi (km)"
             value={form.nextServiceKm}
             onChange={handleChange}
-            className="border p-2 rounded w-full"
+            className={`border p-2 rounded w-full ${darkMode ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400' : 'bg-white border-gray-300'}`}
             required
           />
           {errors.nextServiceKm && <p className="text-red-500 text-sm mt-1">{errors.nextServiceKm}</p>}
@@ -314,11 +314,11 @@ const EditMaintenanceForm = ({ record, onUpdate, onCancel }) => {
         <button
           type="submit"
           disabled={!isFormValid()}
-          className={`px-4 py-2 rounded ${isFormValid() ? 'bg-blue-500 text-white hover:bg-blue-600' : 'bg-gray-400 text-gray-700 cursor-not-allowed'}`}
+          className={`px-4 py-2 rounded ${isFormValid() ? `${darkMode ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-blue-500 text-white hover:bg-blue-600'}` : 'bg-gray-400 text-gray-700 cursor-not-allowed'}`}
         >
           Güncelle
         </button>
-        <button type="button" onClick={onCancel} className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">
+        <button type="button" onClick={onCancel} className={`px-4 py-2 rounded ${darkMode ? 'bg-gray-600 text-white hover:bg-gray-700' : 'bg-gray-500 text-white hover:bg-gray-600'}`}>
           İptal
         </button>
       </div>
