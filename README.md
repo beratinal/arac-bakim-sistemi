@@ -1,6 +1,57 @@
-# Getting Started with Create React App
+# Araç Bakım ve Teknik Servis Günlüğü
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Bu uygulama, araç sahiplerinin periyodik bakımlarını ve servis geçmişlerini takip etmelerine olanak sağlar. ReactJS ve Tailwind CSS kullanılarak geliştirilmiştir.
+
+## Özellikler
+
+- **Bakım Kayıtları Ekleme**: Araç plakası, bakım türü, tarih, kilometre ve maliyet bilgilerini girerek yeni kayıt ekleyin.
+- **Kayıtları Listeleme**: Eklenen bakım kayıtları kronolojik olarak kart şeklinde görüntülenir.
+- **Kayıtları Güncelleme**: Mevcut kayıtları düzenleyin.
+- **Kayıtları Silme**: Gereksiz kayıtları listeden kaldırın.
+- **Responsive Tasarım**: Mobil ve masaüstü cihazlarda uyumlu arayüz.
+- **Renkli Etiketler**: Bakım türüne göre farklı renklerde etiketler (Mekanik: Kırmızı, Periyodik: Yeşil, Elektrik: Sarı, Diğer: Gri).
+
+## Teknolojiler
+
+- ReactJS
+- Tailwind CSS
+- localStorage (veri saklama)
+
+## Kurulum ve Çalıştırma
+
+1. Bağımlılıkları yükleyin:
+   ```bash
+   npm install
+   ```
+
+2. Uygulamayı başlatın:
+   ```bash
+   npm start
+   ```
+
+3. Tarayıcıda `http://localhost:3000` adresine gidin.
+
+## Yapılandırma
+
+- **Tailwind CSS**: Stil için kullanılmıştır. `tailwind.config.js` dosyasında özelleştirebilirsiniz.
+- **Veri Yönetimi**: Başlangıçta localStorage kullanılır. İleride backend entegrasyonu eklenebilir.
+
+## Dağıtım
+
+Netlify üzerinde yayına almak için:
+
+1. `npm run build` komutu ile production build oluşturun.
+2. `build` klasörünü Netlify'ye yükleyin.
+
+## Geliştirme
+
+- `src/Components/`: Bileşenler
+- `src/Pages/`: Sayfalar
+- `src/Interfaces/`: Veri yapıları
+
+## Lisans
+
+Bu proje açık kaynak kodludur.
 
 ## Available Scripts
 
