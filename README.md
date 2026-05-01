@@ -2,6 +2,8 @@
 
 Bu proje, Web Geliştirme; Javascript Proje Bilgisi eğitim programı çerçevesinde, modern web teknolojileri kullanılarak geliştirilmiş bir araç bakım yönetim uygulamasıdır. Proje, araç sahiplerinin periyodik bakımlarını, onarımlarını ve servis geçmişlerini profesyonel bir arayüz ile takip etmelerini sağlar.
 
+🚀 **Canlı Demo:** [Projeyi İncelemek İçin Tıklayın]([https://senin-sitenin-linki.netlify.app](https://inal-servis.netlify.app))
+
 ## 🚀 Proje Hakkında
 
 Uygulama, **ReactJS** kütüphanesi ve **Tailwind CSS** çerçevesi kullanılarak inşa edilmiştir. Kullanıcı deneyimini ön plana çıkaran premium bir "SaaS Dashboard" estetiğine sahiptir. Veriler tarayıcının yerel depolama alanında (**Local Storage**) güvenli bir şekilde saklanır.
