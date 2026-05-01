@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Plus, X, Save, Car, Wrench, Calendar as CalendarIcon, Gauge, CreditCard, FileText } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Plus, X, Save, Car, Wrench, FileText } from 'lucide-react';
 import { Button } from './UI/Button';
 import { Input } from './UI/Input';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from './UI/Card';
-import { Badge } from './UI/Badge';
 
 const AddMaintenanceForm = ({ onAdd, darkMode, initialData, externalOpen, setExternalOpen }) => {
   const [isOpen, setIsOpen] = useState(false);

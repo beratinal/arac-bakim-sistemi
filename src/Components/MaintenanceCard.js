@@ -4,7 +4,6 @@ import { Settings, Zap, MoreHorizontal, Calendar, Gauge, CreditCard, PenLine, Tr
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from './UI/Card';
 import { Badge } from './UI/Badge';
 import { Button } from './UI/Button';
-import { cn } from '../utils';
 
 const MaintenanceCard = ({ record, onEdit, onDelete, darkMode }) => {
   const getStatusInfo = (status) => {

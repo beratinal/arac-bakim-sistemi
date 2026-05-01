@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, Moon, Sun, Car, LayoutDashboard, History, PlusCircle, Wrench, Mail, User, ShieldCheck, HelpCircle, ExternalLink } from 'lucide-react';
+import { Search, Moon, Sun, Car, LayoutDashboard, History, PlusCircle, Wrench, Mail, ShieldCheck, HelpCircle, ExternalLink } from 'lucide-react';
 import AddMaintenanceForm from '../Components/AddMaintenanceForm';
 import MaintenanceList from '../Components/MaintenanceList';
 import EditMaintenanceForm from '../Components/EditMaintenanceForm';

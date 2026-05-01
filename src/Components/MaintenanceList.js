@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Download, Search, Info, BarChart3, CarFront } from 'lucide-react';
+import { Download, Search, BarChart3, CarFront } from 'lucide-react';
 import MaintenanceCard from './MaintenanceCard';
 import { Button } from './UI/Button';
 import { Card, CardContent } from './UI/Card';
