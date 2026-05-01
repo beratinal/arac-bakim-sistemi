@@ -1,121 +1,73 @@
-# Araç Bakım ve Teknik Servis Günlüğü
+# INAL SERVİS | Araç Bakım ve Teknik Servis Takip Sistemi
 
-Bu uygulama, araç sahiplerinin periyodik bakımlarını ve servis geçmişlerini takip etmelerine olanak sağlar. ReactJS ve Tailwind CSS kullanılarak geliştirilmiştir.
+Bu proje, Web Geliştirme; Javascript Proje Bilgisi eğitim programı çerçevesinde, modern web teknolojileri kullanılarak geliştirilmiş bir araç bakım yönetim uygulamasıdır. Proje, araç sahiplerinin periyodik bakımlarını, onarımlarını ve servis geçmişlerini profesyonel bir arayüz ile takip etmelerini sağlar.
 
-## Özellikler
+## 🚀 Proje Hakkında
 
-- **Bakım Kayıtları Ekleme**: Araç plakası, bakım türü, tarih, kilometre ve maliyet bilgilerini girerek yeni kayıt ekleyin.
-- **Kayıtları Listeleme**: Eklenen bakım kayıtları kronolojik olarak kart şeklinde görüntülenir.
-- **Kayıtları Güncelleme**: Mevcut kayıtları düzenleyin.
-- **Kayıtları Silme**: Gereksiz kayıtları listeden kaldırın.
-- **Responsive Tasarım**: Mobil ve masaüstü cihazlarda uyumlu arayüz.
-- **Renkli Etiketler**: Bakım türüne göre farklı renklerde etiketler (Mekanik: Kırmızı, Periyodik: Yeşil, Elektrik: Sarı, Diğer: Gri).
+Uygulama, **ReactJS** kütüphanesi ve **Tailwind CSS** çerçevesi kullanılarak inşa edilmiştir. Kullanıcı deneyimini ön plana çıkaran premium bir "SaaS Dashboard" estetiğine sahiptir. Veriler tarayıcının yerel depolama alanında (**Local Storage**) güvenli bir şekilde saklanır.
 
-## Teknolojiler
+### 🛠 Kullanılan Teknolojiler
 
-- ReactJS
-- Tailwind CSS
-- localStorage (veri saklama)
+- **Kütüphane:** ReactJS (Hooks, Functional Components)
+- **Stil Yönetimi:** Tailwind CSS (Modern & Responsive Design)
+- **Animasyon:** Framer Motion (Premium micro-interactions)
+- **İkonlar:** Lucide React
+- **Grafikler:** Recharts
+- **Dağıtım:** Netlify/Vercel (Prodüksiyona hazır yapı)
 
-## Kurulum ve Çalıştırma
+## 📁 Proje Klasör Yapısı
 
-1. Bağımlılıkları yükleyin:
-   ```bash
-   npm install
-   ```
+Yönergeye uygun olarak proje aşağıdaki mimari üzerine kurulmuştur:
 
-2. Uygulamayı başlatın:
-   ```bash
-   npm start
-   ```
+```
+src/
+├── Components/    # Reusable UI bileşenleri (Formlar, Kartlar, UI Kit)
+├── Pages/         # Ana sayfa ve düzen yapıları
+├── Interfaces/    # Veri modelleri ve tip tanımlamaları
+└── utils/         # Yardımcı fonksiyonlar
+```
 
-3. Tarayıcıda `http://localhost:3000` adresine gidin.
+## ✨ Temel Özellikler (CRUD)
 
-## Yapılandırma
+Proje kapsamında aşağıdaki dört temel işlem (CRUD) başarıyla uygulanmıştır:
 
-- **Tailwind CSS**: Stil için kullanılmıştır. `tailwind.config.js` dosyasında özelleştirebilirsiniz.
-- **Veri Yönetimi**: Başlangıçta localStorage kullanılır. İleride backend entegrasyonu eklenebilir.
+1.  **Ekle (Create):** "Hızlı Kayıt" veya detaylı form üzerinden yeni araç servis kaydı ekleme.
+2.  **Listele (Read):** Mevcut tüm kayıtların dinamik tablolar ve kartlar şeklinde listelenmesi, plaka sorgulama.
+3.  **Güncelle (Update):** Mevcut bir servis kaydının bilgilerini anında düzenleme.
+4.  **Sil (Delete):** Hatalı veya eski kayıtların sistemden kaldırılması.
 
-## Dağıtım
+## 📸 Proje Ekran Görüntüleri
 
-Netlify üzerinde yayına almak için:
+Uygulamanın arayüzüne dair görseller aşağıda sunulmuştur:
 
-1. `npm run build` komutu ile production build oluşturun.
-2. `build` klasörünü Netlify'ye yükleyin.
+### 1. Dashboard (Genel Özet)
+![Dashboard](./src/Components/images/dashboard.png)
+*Sistem istatistikleri ve harcama dağılım analizi.*
 
-## Geliştirme
+### 2. Harcama Analizi
+![Grafik](./src/Components/images/chart.png)
+*İşlem türlerine göre maliyet dağılımı.*
 
-- `src/Components/`: Bileşenler
-- `src/Pages/`: Sayfalar
-- `src/Interfaces/`: Veri yapıları
+### 3. Kayıt Geçmişi
+![Kayıtlar](./src/Components/images/records.png)
+*Tüm servis işlemlerinin detaylı listesi.*
 
-## Lisans
+### 4. Gizlilik ve Veri Yönetimi
+![Gizlilik](./src/Components/images/privacy.png)
+*Yerel veri saklama ve güvenlik bilgilendirmesi.*
 
-Bu proje açık kaynak kodludur.
+## 📈 Proje Çıktıları ve Kazanımlar
 
-## Available Scripts
+- **HTML & CSS Temelleri:** Semantik HTML yapısı ve Tailwind CSS ile modern, esnek tasarım uygulamaları geliştirildi.
+- **Javascript & React:** State yönetimi, Effect hook'ları ve modüler bileşen mantığı pekiştirildi.
+- **Veri Yönetimi:** LocalStorage üzerinden veri kalıcılığı sağlandı ve JSON operasyonları uygulandı.
+- **GitHub Deneyimi:** Proje dosyaları GitHub üzerinde public bir depoda yönetilerek versiyon kontrol deneyimi kazanıldı.
 
-In the project directory, you can run:
+---
 
-### `npm start`
+### 👤 Geliştirici
+**Berat İnal**
+- [LinkedIn](https://www.linkedin.com/in/berat-inal-2b6bb2218)
+- [Email](mailto:brtinal0@gmail.com)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+*Bu proje eğitim amaçlı geliştirilmiş olup, tüm telif hakları korunmaktadır.*
