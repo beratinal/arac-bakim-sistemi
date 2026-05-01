@@ -1,65 +1,140 @@
 import React from 'react';
+import { motion } from 'framer-motion';
+import { Settings, Zap, MoreHorizontal, Calendar, Gauge, CreditCard, PenLine, Trash2 } from 'lucide-react';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from './UI/Card';
+import { Badge } from './UI/Badge';
+import { Button } from './UI/Button';
+import { cn } from '../utils';
 
 const MaintenanceCard = ({ record, onEdit, onDelete, darkMode }) => {
-  const getStatusColor = (status) => {
+  const getStatusInfo = (status) => {
     switch (status) {
-      case 'tamamlandi': return 'bg-green-500 text-white';
-      case 'islemde': return 'bg-blue-500 text-white';
-      case 'parca_bekliyor': return 'bg-orange-500 text-white';
-      default: return 'bg-gray-500 text-white';
+      case 'tamamlandi': return { label: 'Tamamlandı', variant: 'success' };
+      case 'islemde': return { label: 'İşlemde', variant: 'info' };
+      case 'parca_bekliyor': return { label: 'Parça Bekliyor', variant: 'warning' };
+      default: return { label: status, variant: 'secondary' };
     }
   };
 
-  const getStatusLabel = (status) => {
-    switch (status) {
-      case 'tamamlandi': return 'Tamamlandı';
-      case 'islemde': return 'İşlemde';
-      case 'parca_bekliyor': return 'Parça Bekliyor';
-      default: return status;
+  const getTypeIcon = (type) => {
+    switch (type) {
+      case 'mekanik': return <Settings className="w-4 h-4" />;
+      case 'periyodik': return <Calendar className="w-4 h-4" />;
+      case 'elektrik': return <Zap className="w-4 h-4" />;
+      default: return <MoreHorizontal className="w-4 h-4" />;
     }
   };
 
   const getBrandLabel = (brand) => {
-    switch (brand) {
-      case 'volvo': return 'Volvo';
-      case 'audi': return 'Audi';
-      case 'volkswagen': return 'Volkswagen';
-      case 'peugeot': return 'Peugeot';
-      case 'skoda': return 'Skoda';
-      case 'other': return 'Diğer';
-      default: return brand;
-    }
+    const brands = {
+      volvo: 'Volvo',
+      audi: 'Audi',
+      volkswagen: 'Volkswagen',
+      peugeot: 'Peugeot',
+      skoda: 'Skoda',
+      other: 'Diğer'
+    };
+    return brands[brand] || brand;
   };
 
+  const statusInfo = getStatusInfo(record.status);
+
   return (
-    <div className={`${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} p-4 rounded-lg shadow-md border`}>
-      <div className="flex justify-between items-start mb-3">
-        <div className="flex-1 min-w-0">
-          <h3 className={`font-bold text-lg truncate ${darkMode ? 'text-white' : 'text-gray-900'}`}>{record.plate}</h3>
-          <p className={`text-sm truncate ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>{getBrandLabel(record.brand)}</p>
-          {record.invoiceNo && <p className={`text-xs truncate ${darkMode ? 'text-gray-500' : 'text-gray-500'}`}>İş Emri: {record.invoiceNo}</p>}
-        </div>
-        <span className={`px-2 py-1 rounded-full text-xs font-medium whitespace-nowrap ml-2 ${getStatusColor(record.status)}`}>
-          {getStatusLabel(record.status)}
-        </span>
-      </div>
+    <motion.div
+      layout
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, scale: 0.95 }}
+      whileHover={{ y: -4 }}
+      transition={{ duration: 0.2 }}
+    >
+      <Card className="overflow-hidden h-full flex flex-col group">
+        <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-2">
+          <div className="flex flex-col space-y-1">
+            <CardTitle className="text-xl font-bold tracking-tight">
+              {record.plate}
+            </CardTitle>
+            <div className="flex items-center text-sm text-muted-foreground">
+              <span className="font-medium">{getBrandLabel(record.brand)}</span>
+              {record.invoiceNo && (
+                <>
+                  <span className="mx-2 text-border">•</span>
+                  <span className="text-xs">#{record.invoiceNo}</span>
+                </>
+              )}
+            </div>
+          </div>
+          <Badge variant={statusInfo.variant} className="capitalize">
+            {statusInfo.label}
+          </Badge>
+        </CardHeader>
+        
+        <CardContent className="flex-1 space-y-4 pt-4">
+          <div className="flex items-start space-x-3">
+            <div className="mt-0.5 p-2 rounded-md bg-secondary text-secondary-foreground group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+              {getTypeIcon(record.type)}
+            </div>
+            <div className="flex-1">
+              <p className="text-sm font-medium leading-tight line-clamp-2">
+                {record.part}
+              </p>
+            </div>
+          </div>
 
-      <div className={`border-t ${darkMode ? 'border-gray-700' : 'border-gray-200'} pt-3`}>
-        <p className={`font-medium line-clamp-2 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>{record.part}</p>
-        <p className={`text-sm ${darkMode ? 'text-gray-500' : 'text-gray-500'}`}>{record.date} - {record.km.toLocaleString('tr-TR')} km</p>
-        <p className={`text-sm font-semibold ${darkMode ? 'text-blue-400' : 'text-blue-600'}`}>{record.cost.toLocaleString('tr-TR')} TL</p>
-        <p className={`text-xs ${darkMode ? 'text-gray-500' : 'text-gray-600'} mt-2`}>Sonraki Bakım: {record.nextServiceKm?.toLocaleString('tr-TR') || '-'} km</p>
-      </div>
+          <div className="grid grid-cols-2 gap-4 pt-2">
+            <div className="space-y-1">
+              <div className="flex items-center text-xs text-muted-foreground">
+                <Calendar className="mr-1 w-3 h-3" /> Tarih
+              </div>
+              <p className="text-sm font-semibold">{record.date}</p>
+            </div>
+            <div className="space-y-1">
+              <div className="flex items-center text-xs text-muted-foreground">
+                <Gauge className="mr-1 w-3 h-3" /> Kilometre
+              </div>
+              <p className="text-sm font-semibold">{record.km.toLocaleString('tr-TR')} km</p>
+            </div>
+            <div className="space-y-1">
+              <div className="flex items-center text-xs text-muted-foreground">
+                <CreditCard className="mr-1 w-3 h-3" /> Maliyet
+              </div>
+              <p className="text-sm font-bold text-primary">
+                {record.cost.toLocaleString('tr-TR')} TL
+              </p>
+            </div>
+            {record.nextServiceKm && (
+              <div className="space-y-1">
+                <div className="flex items-center text-xs text-muted-foreground">
+                  <Zap className="mr-1 w-3 h-3" /> Sonraki Bakım
+                </div>
+                <p className="text-sm font-semibold text-orange-500/80">
+                  {record.nextServiceKm.toLocaleString('tr-TR')} km
+                </p>
+              </div>
+            )}
+          </div>
+        </CardContent>
 
-      <div className="mt-4 flex space-x-2">
-        <button onClick={() => onEdit(record)} className={`${darkMode ? 'bg-yellow-600 hover:bg-yellow-700' : 'bg-yellow-500 hover:bg-yellow-600'} text-white px-3 py-1 rounded text-sm`}>
-          Düzenle
-        </button>
-        <button onClick={() => onDelete(record.id)} className={`${darkMode ? 'bg-red-600 hover:bg-red-700' : 'bg-red-500 hover:bg-red-600'} text-white px-3 py-1 rounded text-sm`}>
-          Sil
-        </button>
-      </div>
-    </div>
+        <CardFooter className="pt-2 flex gap-2">
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="flex-1 gap-2"
+            onClick={() => onEdit(record)}
+          >
+            <PenLine className="w-3.5 h-3.5" /> Düzenle
+          </Button>
+          <Button 
+            variant="destructive" 
+            size="sm" 
+            className="flex-1 gap-2 bg-destructive/10 text-destructive hover:bg-destructive hover:text-destructive-foreground transition-all"
+            onClick={() => onDelete(record.id)}
+          >
+            <Trash2 className="w-3.5 h-3.5" /> Sil
+          </Button>
+        </CardFooter>
+      </Card>
+    </motion.div>
   );
 };
 

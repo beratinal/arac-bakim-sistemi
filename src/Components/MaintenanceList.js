@@ -1,16 +1,16 @@
 import React from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Download, Search, Info, BarChart3, CarFront } from 'lucide-react';
 import MaintenanceCard from './MaintenanceCard';
+import { Button } from './UI/Button';
+import { Card, CardContent } from './UI/Card';
 
 const MaintenanceList = ({ records, searchPlate, onEdit, onDelete, darkMode }) => {
   const sortedRecords = [...records].sort((a, b) => new Date(b.date) - new Date(a.date));
-
   const totalCost = records.reduce((sum, record) => sum + (record.cost || 0), 0);
 
   const exportToCSV = () => {
-    if (records.length === 0) {
-      alert('Dışa aktarılacak kayıt bulunmamaktadır.');
-      return;
-    }
+    if (records.length === 0) return;
 
     const headers = ['Plaka', 'Araç Markası', 'Parça/İşlem', 'Tarih', 'Kilometre', 'Maliyet (TL)', 'İşlem Türü', 'Durum', 'İş Emri No', 'Sonraki Bakım (km)'];
     const rows = sortedRecords.map(record => [
@@ -36,100 +36,134 @@ const MaintenanceList = ({ records, searchPlate, onEdit, onDelete, darkMode }) =
     const url = URL.createObjectURL(blob);
     link.setAttribute('href', url);
     link.setAttribute('download', `arac-bakim-kayitlari-${new Date().toISOString().split('T')[0]}.csv`);
-    link.style.visibility = 'hidden';
-    document.body.appendChild(link);
     link.click();
-    document.body.removeChild(link);
   };
 
   const getTypeLabel = (type) => {
-    const labels = {
-      mekanik: 'Mekanik',
-      periyodik: 'Periyodik Bakım',
-      elektrik: 'Elektrik',
-      diger: 'Diğer'
-    };
+    const labels = { mekanik: 'Mekanik', periyodik: 'Periyodik Bakım', elektrik: 'Elektrik', diger: 'Diğer' };
     return labels[type] || type;
   };
 
   const getStatusLabel = (status) => {
-    const labels = {
-      tamamlandi: 'Tamamlandı',
-      islemde: 'İşlemde',
-      parca_bekliyor: 'Parça Bekliyor'
-    };
+    const labels = { tamamlandi: 'Tamamlandı', islemde: 'İşlemde', parca_bekliyor: 'Parça Bekliyor' };
     return labels[status] || status;
   };
 
   const getBrandLabel = (brand) => {
-    const labels = {
-      volvo: 'Volvo',
-      audi: 'Audi',
-      volkswagen: 'Volkswagen',
-      peugeot: 'Peugeot',
-      skoda: 'Skoda',
-      other: 'Diğer'
-    };
+    const labels = { volvo: 'Volvo', audi: 'Audi', volkswagen: 'Volkswagen', peugeot: 'Peugeot', skoda: 'Skoda', other: 'Diğer' };
     return labels[brand] || brand;
   };
 
   if (records.length === 0 && searchPlate) {
     return (
-      <div className="text-center py-8">
-        <p className={`text-lg ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>Bu plakaya ait geçmiş bakım kaydı bulunamadı.</p>
-      </div>
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="flex flex-col items-center justify-center py-12 space-y-4"
+      >
+        <div className="p-4 rounded-full bg-muted">
+          <Search className="w-8 h-8 text-muted-foreground" />
+        </div>
+        <p className="text-lg font-medium text-muted-foreground">Bu plakaya ait geçmiş bakım kaydı bulunamadı.</p>
+      </motion.div>
+    );
+  }
+
+  if (records.length === 0) {
+    return (
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="flex flex-col items-center justify-center py-20 space-y-6 text-center"
+      >
+        <div className="relative">
+          <div className="absolute inset-0 bg-primary/20 blur-3xl rounded-full" />
+          <div className="relative p-6 rounded-full bg-muted border-2 border-dashed border-primary/20">
+            <CarFront className="w-12 h-12 text-primary/40" />
+          </div>
+        </div>
+        <div className="space-y-2">
+          <h3 className="text-2xl font-bold tracking-tight">Henüz Kayıt Bulunmuyor</h3>
+          <p className="text-muted-foreground max-w-xs mx-auto">
+            Aracınızın bakım geçmişini takip etmek için ilk kaydınızı hemen ekleyebilirsiniz.
+          </p>
+        </div>
+      </motion.div>
     );
   }
 
   return (
-    <div>
+    <div className="space-y-6">
       {searchPlate && records.length > 0 && (
-        <div className={`bg-gradient-to-r ${darkMode ? 'from-blue-700 to-blue-800' : 'from-blue-500 to-blue-600'} text-white p-6 rounded-lg shadow-lg mb-6`}>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-            <div>
-              <p className="text-sm opacity-90">Toplam Kayıt Sayısı</p>
-              <p className="text-3xl font-bold">{records.length}</p>
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
+          <Card className="bg-primary text-primary-foreground border-none shadow-xl overflow-hidden relative">
+            <div className="absolute top-0 right-0 p-8 opacity-10 pointer-events-none">
+              <CarFront size={120} strokeWidth={1} />
             </div>
-            <div>
-              <p className="text-sm opacity-90">Plaka</p>
-              <p className="text-3xl font-bold">{records[0]?.plate}</p>
-            </div>
-            <div>
-              <p className="text-sm opacity-90">Toplam Harcanan Maliyet</p>
-              <p className="text-3xl font-bold">{totalCost.toLocaleString('tr-TR')} TL</p>
-            </div>
-          </div>
-          <button
-            onClick={exportToCSV}
-            className={`px-4 py-2 rounded text-sm font-medium ${darkMode ? 'bg-blue-600 hover:bg-blue-500' : 'bg-white text-blue-600 hover:bg-gray-100'}`}
-          >
-            📥 Verileri Dışa Aktar (CSV)
-          </button>
-        </div>
+            <CardContent className="p-6 sm:p-8">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
+                <div className="space-y-1">
+                  <p className="text-xs font-medium uppercase tracking-wider opacity-70">Plaka</p>
+                  <p className="text-3xl font-bold tracking-tight">{records[0]?.plate}</p>
+                </div>
+                <div className="space-y-1">
+                  <p className="text-xs font-medium uppercase tracking-wider opacity-70">Toplam Kayıt</p>
+                  <p className="text-3xl font-bold tracking-tight">{records.length}</p>
+                </div>
+                <div className="space-y-1">
+                  <p className="text-xs font-medium uppercase tracking-wider opacity-70">Toplam Harcama</p>
+                  <p className="text-3xl font-bold tracking-tight">{totalCost.toLocaleString('tr-TR')} TL</p>
+                </div>
+              </div>
+              <div className="mt-8 flex gap-4">
+                <Button 
+                  variant="secondary" 
+                  className="gap-2"
+                  onClick={exportToCSV}
+                >
+                  <Download className="w-4 h-4" /> Dışa Aktar (CSV)
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
       )}
 
       {records.length > 0 && !searchPlate && (
-        <div className="mb-4 flex justify-end">
-          <button
+        <div className="flex justify-between items-center px-1">
+          <h3 className="text-lg font-semibold flex items-center gap-2">
+            <BarChart3 className="w-5 h-5" /> Son Kayıtlar
+          </h3>
+          <Button
+            variant="outline"
+            size="sm"
             onClick={exportToCSV}
-            className={`px-4 py-2 rounded text-sm font-medium ${darkMode ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-blue-500 text-white hover:bg-blue-600'}`}
+            className="gap-2"
           >
-            📥 Verileri Dışa Aktar (CSV)
-          </button>
+            <Download className="w-4 h-4" /> Verileri Dışa Aktar
+          </Button>
         </div>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {sortedRecords.map(record => (
-          <MaintenanceCard
-            key={record.id}
-            record={record}
-            onEdit={onEdit}
-            onDelete={onDelete}
-            darkMode={darkMode}
-          />
-        ))}
-      </div>
+      <motion.div 
+        layout
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+      >
+        <AnimatePresence mode="popLayout">
+          {sortedRecords.map((record, index) => (
+            <MaintenanceCard
+              key={record.id}
+              record={record}
+              onEdit={onEdit}
+              onDelete={onDelete}
+              darkMode={darkMode}
+            />
+          ))}
+        </AnimatePresence>
+      </motion.div>
     </div>
   );
 };

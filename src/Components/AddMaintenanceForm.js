@@ -1,326 +1,280 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Plus, X, Save, Car, Wrench, Calendar as CalendarIcon, Gauge, CreditCard, FileText } from 'lucide-react';
+import { Button } from './UI/Button';
+import { Input } from './UI/Input';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from './UI/Card';
+import { Badge } from './UI/Badge';
 
-const AddMaintenanceForm = ({ onAdd, darkMode }) => {
-  const [form, setForm] = useState({
+const AddMaintenanceForm = ({ onAdd, darkMode, initialData, externalOpen, setExternalOpen }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [formData, setFormData] = useState({
     plate: '',
+    brand: 'volvo',
     part: '',
-    date: '',
+    date: new Date().toISOString().split('T')[0],
     km: '',
     cost: '',
-    type: '',
-    brand: '',
+    type: 'mekanik',
+    status: 'tamamlandi',
     invoiceNo: '',
-    status: '',
     nextServiceKm: ''
   });
 
-  const [errors, setErrors] = useState({});
-
-  const today = new Date().toISOString().split('T')[0];
-  const minDate = '1950-01-01';
-
-  const validatePlate = (value) => {
-    const trimmed = value.trim();
-    if (!trimmed) return 'Plaka boş bırakılamaz';
-    if (trimmed.length > 15) return 'Plaka maksimum 15 karakter olabilir';
-    return '';
-  };
-
-  const validatePart = (value) => {
-    const trimmed = value.trim();
-    if (!trimmed) return 'İşlem adı boş bırakılamaz';
-    if (trimmed.length > 50) return 'İşlem adı maksimum 50 karakter olabilir';
-    return '';
-  };
-
-  const validateDate = (value) => {
-    if (!value) return 'Tarih seçilmelidir';
-    if (value < minDate || value > today) return 'Tarih 1950 ile bugün arasında olmalıdır';
-    return '';
-  };
-
-  const validateKm = (value) => {
-    if (!value) return 'Kilometre girilmelidir';
-    const num = parseInt(value);
-    if (isNaN(num) || num < 0 || num > 9999999) return 'Lütfen geçerli bir kilometre giriniz (Maks: 9.999.999)';
-    return '';
-  };
-
-  const validateCost = (value) => {
-    if (!value) return 'Maliyet girilmelidir';
-    const num = parseFloat(value);
-    if (isNaN(num) || num < 0 || num > 5000000) return 'Maliyet 0 ile 5.000.000 TL arasında olmalıdır';
-    return '';
-  };
-
-  const validateType = (value) => {
-    if (!value) return 'Tür seçilmelidir';
-    return '';
-  };
-
-  const validateBrand = (value) => {
-    if (!value) return 'Araç markası seçilmelidir';
-    return '';
-  };
-
-  const validateStatus = (value) => {
-    if (!value) return 'İşlem durumu seçilmelidir';
-    return '';
-  };
-
-  const validateNextServiceKm = (value) => {
-    if (!value) return 'Sonraki bakım hedefi girilmelidir';
-    const num = parseInt(value);
-    if (isNaN(num) || num < 0 || num > 9999999) return 'Geçerli bir kilometre giriniz';
-    return '';
-  };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    let newValue = value;
-
-    if (name === 'km' || name === 'cost' || name === 'nextServiceKm') {
-      // Sadece sayı ve nokta (cost için) kabul et
-      newValue = value.replace(/[^0-9.]/g, '');
-      if (name === 'km' || name === 'nextServiceKm') newValue = newValue.replace(/\./g, ''); // km için nokta yok
+  useEffect(() => {
+    if (initialData) {
+      setFormData(prev => ({ ...prev, ...initialData }));
     }
-
-    setForm({ ...form, [name]: newValue });
-
-    // Validation
-    let error = '';
-    switch (name) {
-      case 'plate':
-        error = validatePlate(newValue);
-        break;
-      case 'part':
-        error = validatePart(newValue);
-        break;
-      case 'date':
-        error = validateDate(newValue);
-        break;
-      case 'km':
-        error = validateKm(newValue);
-        // Auto-calculate next service km
-        if (!error && newValue) {
-          const nextKm = parseInt(newValue) + 10000;
-          setForm(prev => ({ ...prev, nextServiceKm: nextKm.toString() }));
-        }
-        break;
-      case 'cost':
-        error = validateCost(newValue);
-        break;
-      case 'type':
-        error = validateType(newValue);
-        break;
-      case 'brand':
-        error = validateBrand(newValue);
-        break;
-      case 'status':
-        error = validateStatus(newValue);
-        break;
-      case 'nextServiceKm':
-        error = validateNextServiceKm(newValue);
-        break;
-      default:
-        break;
+    if (externalOpen) {
+      setIsOpen(true);
     }
-    setErrors({ ...errors, [name]: error });
-  };
+  }, [initialData, externalOpen]);
 
-  const isFormValid = () => {
-    return !Object.values(errors).some(error => error) &&
-           form.plate.trim() &&
-           form.part.trim() &&
-           form.date &&
-           form.km &&
-           form.cost &&
-           form.type &&
-           form.brand &&
-           form.status &&
-           form.nextServiceKm;
+  const handleClose = () => {
+    setIsOpen(false);
+    if (setExternalOpen) setExternalOpen(false);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!isFormValid()) return;
+    if (!formData.plate || !formData.part || !formData.km || !formData.cost) {
+      alert('Lütfen tüm zorunlu alanları doldurun.');
+      return;
+    }
+
     onAdd({
-      id: Date.now().toString(),
-      ...form,
-      km: parseInt(form.km),
-      cost: parseFloat(form.cost),
-      nextServiceKm: parseInt(form.nextServiceKm)
+      ...formData,
+      id: Date.now(),
+      km: Number(formData.km),
+      cost: Number(formData.cost),
+      nextServiceKm: formData.nextServiceKm ? Number(formData.nextServiceKm) : null
     });
-    setForm({
+
+    setFormData({
       plate: '',
+      brand: 'volvo',
       part: '',
-      date: '',
+      date: new Date().toISOString().split('T')[0],
       km: '',
       cost: '',
-      type: '',
-      brand: '',
+      type: 'mekanik',
+      status: 'tamamlandi',
       invoiceNo: '',
-      status: '',
       nextServiceKm: ''
     });
-    setErrors({});
+    handleClose();
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
   return (
-    <form onSubmit={handleSubmit} className={`${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} p-6 rounded-lg shadow-md border`}>
-      <h2 className={`text-xl font-bold mb-4 ${darkMode ? 'text-white' : 'text-gray-900'}`}>Yeni Bakım Kaydı Ekle</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {/* Row 1 */}
-        <div>
-          <input
-            type="text"
-            name="plate"
-            placeholder="Araç Plakası"
-            value={form.plate}
-            onChange={handleChange}
-            maxLength="15"
-            className={`border p-2 rounded w-full ${darkMode ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400' : 'bg-white border-gray-300'}`}
-            required
-          />
-          {errors.plate && <p className="text-red-500 text-sm mt-1">{errors.plate}</p>}
-        </div>
-        <div>
-          <select
-            name="brand"
-            value={form.brand}
-            onChange={handleChange}
-            className={`border p-2 rounded w-full ${darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300'}`}
-            required
+    <div className="mb-8">
+      {!isOpen ? (
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+        >
+          <Button 
+            onClick={() => setIsOpen(true)}
+            className="w-full sm:w-auto gap-2 py-6 px-8 text-lg font-semibold shadow-lg hover:shadow-xl transition-all active:scale-95"
           >
-            <option value="">Araç Markası Seçin</option>
-            <option value="volvo">Volvo</option>
-            <option value="audi">Audi</option>
-            <option value="volkswagen">Volkswagen</option>
-            <option value="peugeot">Peugeot</option>
-            <option value="skoda">Skoda</option>
-            <option value="other">Diğer</option>
-          </select>
-          {errors.brand && <p className="text-red-500 text-sm mt-1">{errors.brand}</p>}
-        </div>
-        <div>
-          <input
-            type="text"
-            name="invoiceNo"
-            placeholder="Fatura/İş Emri No (İsteğe bağlı)"
-            value={form.invoiceNo}
-            onChange={(e) => setForm({ ...form, invoiceNo: e.target.value.slice(0, 20) })}
-            maxLength="20"
-            className={`border p-2 rounded w-full ${darkMode ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400' : 'bg-white border-gray-300'}`}
-          />
-        </div>
+            <Plus className="w-5 h-5" /> Yeni Bakım Kaydı Ekle
+          </Button>
+        </motion.div>
+      ) : (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 20 }}
+        >
+          <Card className="shadow-2xl border-primary/20 bg-card/50 backdrop-blur-xl overflow-hidden">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 bg-muted/30 pb-6">
+              <div>
+                <CardTitle className="text-2xl font-bold flex items-center gap-2">
+                  <Wrench className="w-6 h-6 text-primary" /> Yeni Servis Kaydı
+                </CardTitle>
+                <CardDescription>
+                  Araca yapılan bakım veya onarım bilgilerini detaylıca girin.
+                </CardDescription>
+              </div>
+              <Button variant="ghost" size="icon" onClick={() => setIsOpen(false)} className="rounded-full">
+                <X className="w-5 h-5" />
+              </Button>
+            </CardHeader>
+            <CardContent className="pt-6">
+              <form onSubmit={handleSubmit} className="space-y-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {/* Araç Bilgileri Section */}
+                  <div className="space-y-4 p-4 rounded-xl bg-muted/20 border border-border/50">
+                    <h4 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
+                      <Car className="w-4 h-4" /> Araç Bilgileri
+                    </h4>
+                    <div className="space-y-4">
+                      <div className="space-y-2">
+                        <label className="text-sm font-medium">Plaka *</label>
+                        <Input 
+                          name="plate" 
+                          placeholder="34 ABC 123" 
+                          value={formData.plate} 
+                          onChange={handleChange} 
+                          required
+                          className="bg-background/50 uppercase font-mono font-bold"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <label className="text-sm font-medium">Marka</label>
+                        <select
+                          name="brand"
+                          value={formData.brand}
+                          onChange={handleChange}
+                          className="flex h-10 w-full rounded-md border border-input bg-background/50 px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                        >
+                          <option value="volvo">Volvo</option>
+                          <option value="audi">Audi</option>
+                          <option value="volkswagen">Volkswagen</option>
+                          <option value="peugeot">Peugeot</option>
+                          <option value="skoda">Skoda</option>
+                          <option value="other">Diğer</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
 
-        {/* Row 2 */}
-        <div>
-          <input
-            type="text"
-            name="part"
-            placeholder="Parça/İşlem Adı"
-            value={form.part}
-            onChange={handleChange}
-            maxLength="50"
-            className={`border p-2 rounded w-full ${darkMode ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400' : 'bg-white border-gray-300'}`}
-            required
-          />
-          {errors.part && <p className="text-red-500 text-sm mt-1">{errors.part}</p>}
-        </div>
-        <div>
-          <input
-            type="date"
-            name="date"
-            value={form.date}
-            onChange={handleChange}
-            min={minDate}
-            max={today}
-            className={`border p-2 rounded w-full ${darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300'}`}
-            required
-          />
-          {errors.date && <p className="text-red-500 text-sm mt-1">{errors.date}</p>}
-        </div>
-        <div>
-          <select
-            name="type"
-            value={form.type}
-            onChange={handleChange}
-            className={`border p-2 rounded w-full ${darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300'}`}
-            required
-          >
-            <option value="">İşlem Türü Seçin</option>
-            <option value="mekanik">Mekanik</option>
-            <option value="periyodik">Periyodik Bakım</option>
-            <option value="elektrik">Elektrik</option>
-            <option value="diger">Diğer</option>
-          </select>
-          {errors.type && <p className="text-red-500 text-sm mt-1">{errors.type}</p>}
-        </div>
+                  {/* İşlem Bilgileri Section */}
+                  <div className="space-y-4 p-4 rounded-xl bg-muted/20 border border-border/50">
+                    <h4 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
+                      <Wrench className="w-4 h-4" /> İşlem Detayları
+                    </h4>
+                    <div className="space-y-4">
+                      <div className="space-y-2">
+                        <label className="text-sm font-medium">Parça / İşlem *</label>
+                        <Input 
+                          name="part" 
+                          placeholder="Örn: Yağ Değişimi" 
+                          value={formData.part} 
+                          onChange={handleChange} 
+                          required
+                          className="bg-background/50"
+                        />
+                      </div>
+                      <div className="grid grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <label className="text-sm font-medium">Tür</label>
+                          <select
+                            name="type"
+                            value={formData.type}
+                            onChange={handleChange}
+                            className="flex h-10 w-full rounded-md border border-input bg-background/50 px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                          >
+                            <option value="mekanik">Mekanik</option>
+                            <option value="periyodik">Periyodik</option>
+                            <option value="elektrik">Elektrik</option>
+                            <option value="diger">Diğer</option>
+                          </select>
+                        </div>
+                        <div className="space-y-2">
+                          <label className="text-sm font-medium">Durum</label>
+                          <select
+                            name="status"
+                            value={formData.status}
+                            onChange={handleChange}
+                            className="flex h-10 w-full rounded-md border border-input bg-background/50 px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                          >
+                            <option value="tamamlandi">Tamamlandı</option>
+                            <option value="islemde">İşlemde</option>
+                            <option value="parca_bekliyor">Bekliyor</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
 
-        {/* Row 3 */}
-        <div>
-          <input
-            type="text"
-            name="km"
-            placeholder="Kilometre"
-            value={form.km}
-            onChange={handleChange}
-            className={`border p-2 rounded w-full ${darkMode ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400' : 'bg-white border-gray-300'}`}
-            required
-          />
-          {errors.km && <p className="text-red-500 text-sm mt-1">{errors.km}</p>}
-        </div>
-        <div>
-          <input
-            type="text"
-            name="cost"
-            placeholder="Maliyet (TL)"
-            value={form.cost}
-            onChange={handleChange}
-            className={`border p-2 rounded w-full ${darkMode ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400' : 'bg-white border-gray-300'}`}
-            required
-          />
-          {errors.cost && <p className="text-red-500 text-sm mt-1">{errors.cost}</p>}
-        </div>
-        <div>
-          <select
-            name="status"
-            value={form.status}
-            onChange={handleChange}
-            className={`border p-2 rounded w-full ${darkMode ? 'bg-gray-700 border-gray-600 text-white' : 'bg-white border-gray-300'}`}
-            required
-          >
-            <option value="">İşlem Durumu Seçin</option>
-            <option value="tamamlandi">Tamamlandı</option>
-            <option value="islemde">İşlemde</option>
-            <option value="parca_bekliyor">Parça Bekliyor</option>
-          </select>
-          {errors.status && <p className="text-red-500 text-sm mt-1">{errors.status}</p>}
-        </div>
+                  {/* Teknik Detaylar Section */}
+                  <div className="space-y-4 p-4 rounded-xl bg-muted/20 border border-border/50">
+                    <h4 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
+                      <FileText className="w-4 h-4" /> Teknik & Finansal
+                    </h4>
+                    <div className="space-y-4">
+                      <div className="grid grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <label className="text-sm font-medium">Kilometre *</label>
+                          <Input 
+                            type="number" 
+                            name="km" 
+                            placeholder="120000" 
+                            value={formData.km} 
+                            onChange={handleChange} 
+                            required
+                            className="bg-background/50"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <label className="text-sm font-medium">Maliyet (TL) *</label>
+                          <Input 
+                            type="number" 
+                            name="cost" 
+                            placeholder="1500" 
+                            value={formData.cost} 
+                            onChange={handleChange} 
+                            required
+                            className="bg-background/50"
+                          />
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <label className="text-sm font-medium">Tarih</label>
+                          <Input 
+                            type="date" 
+                            name="date" 
+                            value={formData.date} 
+                            onChange={handleChange}
+                            className="bg-background/50"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <label className="text-sm font-medium">İş Emri No</label>
+                          <Input 
+                            name="invoiceNo" 
+                            placeholder="EM-1234" 
+                            value={formData.invoiceNo} 
+                            onChange={handleChange}
+                            className="bg-background/50"
+                          />
+                        </div>
+                      </div>
+                      <div className="space-y-2">
+                        <label className="text-sm font-medium">Sonraki Bakım (KM)</label>
+                        <Input 
+                          type="number" 
+                          name="nextServiceKm" 
+                          placeholder="135000" 
+                          value={formData.nextServiceKm} 
+                          onChange={handleChange}
+                          className="bg-background/50 border-orange-500/20 focus:border-orange-500/50"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
 
-        {/* Row 4 */}
-        <div>
-          <input
-            type="text"
-            name="nextServiceKm"
-            placeholder="Sonraki Bakım Hedefi (km)"
-            value={form.nextServiceKm}
-            onChange={handleChange}
-            className={`border p-2 rounded w-full ${darkMode ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400' : 'bg-white border-gray-300'}`}
-            required
-          />
-          {errors.nextServiceKm && <p className="text-red-500 text-sm mt-1">{errors.nextServiceKm}</p>}
-        </div>
-      </div>
-      <button
-        type="submit"
-        disabled={!isFormValid()}
-        className={`mt-4 px-4 py-2 rounded ${isFormValid() ? `${darkMode ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-blue-500 text-white hover:bg-blue-600'}` : 'bg-gray-400 text-gray-700 cursor-not-allowed'}`}
-      >
-        Ekle
-      </button>
-    </form>
+                <div className="flex justify-end gap-4 pt-6 border-t">
+                  <Button variant="outline" type="button" onClick={() => setIsOpen(false)}>
+                    İptal
+                  </Button>
+                  <Button type="submit" className="gap-2 px-8">
+                    <Save className="w-4 h-4" /> Kaydı Kaydet
+                  </Button>
+                </div>
+              </form>
+            </CardContent>
+          </Card>
+        </motion.div>
+      )}
+    </div>
   );
 };
 

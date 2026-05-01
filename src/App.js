@@ -21,9 +21,7 @@ function App() {
   }, [darkMode]);
 
   return (
-    <div className={`App ${darkMode ? 'dark' : ''}`}>
-      <Home darkMode={darkMode} setDarkMode={setDarkMode} />
-    </div>
+    <Home darkMode={darkMode} setDarkMode={setDarkMode} />
   );
 }
 
