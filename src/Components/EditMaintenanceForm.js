@@ -38,7 +38,7 @@ const EditMaintenanceForm = ({ record, onUpdate, onCancel, darkMode }) => {
       exit={{ opacity: 0, y: 20 }}
     >
       <Card className="shadow-2xl border-primary/20 bg-card/50 backdrop-blur-xl overflow-hidden mb-8">
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 bg-muted/30 pb-6">
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 bg-surface/30 pb-6">
           <div>
             <CardTitle className="text-2xl font-bold flex items-center gap-2">
               <Wrench className="w-6 h-6 text-primary" /> Kaydı Düzenle
@@ -55,7 +55,7 @@ const EditMaintenanceForm = ({ record, onUpdate, onCancel, darkMode }) => {
           <form onSubmit={handleSubmit} className="space-y-8">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {/* Araç Bilgileri Section */}
-              <div className="space-y-4 p-4 rounded-xl bg-muted/20 border border-border/50">
+              <div className="space-y-4 p-4 rounded-xl bg-surface border border-border/50">
                 <h4 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
                   <Car className="w-4 h-4" /> Araç Bilgileri
                 </h4>
@@ -91,7 +91,7 @@ const EditMaintenanceForm = ({ record, onUpdate, onCancel, darkMode }) => {
               </div>
 
               {/* İşlem Bilgileri Section */}
-              <div className="space-y-4 p-4 rounded-xl bg-muted/20 border border-border/50">
+              <div className="space-y-4 p-4 rounded-xl bg-surface border border-border/50">
                 <h4 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
                   <Wrench className="w-4 h-4" /> İşlem Detayları
                 </h4>
@@ -140,7 +140,7 @@ const EditMaintenanceForm = ({ record, onUpdate, onCancel, darkMode }) => {
               </div>
 
               {/* Teknik Detaylar Section */}
-              <div className="space-y-4 p-4 rounded-xl bg-muted/20 border border-border/50">
+              <div className="space-y-4 p-4 rounded-xl bg-surface border border-border/50">
                 <h4 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground flex items-center gap-2">
                   <FileText className="w-4 h-4" /> Teknik & Finansal
                 </h4>

@@ -61,7 +61,7 @@ const MaintenanceList = ({ records, searchPlate, onEdit, onDelete, darkMode }) =
         animate={{ opacity: 1 }}
         className="flex flex-col items-center justify-center py-12 space-y-4"
       >
-        <div className="p-4 rounded-full bg-muted">
+        <div className="p-4 rounded-full bg-surface">
           <Search className="w-8 h-8 text-muted-foreground" />
         </div>
         <p className="text-lg font-medium text-muted-foreground">Bu plakaya ait geçmiş bakım kaydı bulunamadı.</p>
@@ -78,7 +78,7 @@ const MaintenanceList = ({ records, searchPlate, onEdit, onDelete, darkMode }) =
       >
         <div className="relative">
           <div className="absolute inset-0 bg-primary/20 blur-3xl rounded-full" />
-          <div className="relative p-6 rounded-full bg-muted border-2 border-dashed border-primary/20">
+          <div className="relative p-6 rounded-full bg-surface border-2 border-dashed border-primary/20">
             <CarFront className="w-12 h-12 text-primary/40" />
           </div>
         </div>
@@ -99,7 +99,7 @@ const MaintenanceList = ({ records, searchPlate, onEdit, onDelete, darkMode }) =
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
         >
-          <Card className="bg-primary text-primary-foreground border-none shadow-xl overflow-hidden relative">
+          <Card className="bg-surface-secondary text-card-foreground border-none shadow-xl overflow-hidden relative">
             <div className="absolute top-0 right-0 p-8 opacity-10 pointer-events-none">
               <CarFront size={120} strokeWidth={1} />
             </div>

@@ -22,7 +22,7 @@ const Modal = ({ isOpen, onClose, title, children }) => {
             className="fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] w-full max-w-lg z-[101] p-6"
           >
             <div className="bg-card border shadow-2xl rounded-xl overflow-hidden">
-              <div className="flex items-center justify-between p-4 border-b bg-muted/30">
+              <div className="flex items-center justify-between p-4 border-b bg-surface/30">
                 <h2 className="text-lg font-bold tracking-tight uppercase">{title}</h2>
                 <Button variant="ghost" size="icon" onClick={onClose} className="rounded-full h-8 w-8">
                   <X size={18} />
@@ -31,7 +31,7 @@ const Modal = ({ isOpen, onClose, title, children }) => {
               <div className="p-6">
                 {children}
               </div>
-              <div className="p-4 border-t bg-muted/10 flex justify-end">
+              <div className="p-4 border-t bg-surface/10 flex justify-end">
                 <Button onClick={onClose} size="sm">Kapat</Button>
               </div>
             </div>

@@ -96,7 +96,7 @@ const Home = ({ darkMode, setDarkMode }) => {
                 placeholder="Plaka ile hızlı sorgula..."
                 value={searchPlate}
                 onChange={(e) => setSearchPlate(e.target.value)}
-                className="pl-10 bg-muted/50 border-none ring-offset-background focus-visible:ring-primary/20"
+                className="pl-10 bg-surface border-none ring-offset-background focus-visible:ring-primary/20"
               />
             </div>
             
@@ -104,7 +104,7 @@ const Home = ({ darkMode, setDarkMode }) => {
               variant="ghost"
               size="icon"
               onClick={() => setDarkMode(!darkMode)}
-              className="rounded-full w-10 h-10 hover:bg-muted"
+              className="rounded-full w-10 h-10 hover:bg-surface"
             >
               {darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
             </Button>
@@ -125,7 +125,7 @@ const Home = ({ darkMode, setDarkMode }) => {
                 <h2 className="text-4xl sm:text-5xl font-extrabold tracking-tight">Servis Günlüğü</h2>
               </div>
               
-              <div className="flex bg-muted p-1 rounded-xl">
+              <div className="flex bg-surface p-1 rounded-xl">
                 <button
                   onClick={() => setActiveTab('overview')}
                   className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all ${
@@ -154,7 +154,7 @@ const Home = ({ darkMode, setDarkMode }) => {
                 placeholder="Plaka sorgula..."
                 value={searchPlate}
                 onChange={(e) => setSearchPlate(e.target.value)}
-                className="pl-10 bg-muted/50 border-none"
+                className="pl-10 bg-surface border-none"
               />
             </div>
           </div>
@@ -300,7 +300,7 @@ const Home = ({ darkMode, setDarkMode }) => {
           <div className="grid grid-cols-1 gap-3">
             <a 
               href="mailto:brtinal0@gmail.com"
-              className="flex items-center justify-between p-4 rounded-xl bg-muted/50 hover:bg-primary/10 border border-transparent hover:border-primary/20 transition-all group"
+              className="flex items-center justify-between p-4 rounded-xl bg-surface hover:bg-primary/10 border border-transparent hover:border-primary/20 transition-all group"
             >
               <div className="flex items-center gap-3">
                 <div className="p-2 rounded-lg bg-background text-primary">
@@ -317,7 +317,7 @@ const Home = ({ darkMode, setDarkMode }) => {
               href="https://www.linkedin.com/in/berat-inal-2b6bb2218"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-between p-4 rounded-xl bg-muted/50 hover:bg-primary/10 border border-transparent hover:border-primary/20 transition-all group"
+              className="flex items-center justify-between p-4 rounded-xl bg-surface hover:bg-primary/10 border border-transparent hover:border-primary/20 transition-all group"
             >
               <div className="flex items-center gap-3">
                 <div className="p-2 rounded-lg bg-background text-[#0A66C2]">

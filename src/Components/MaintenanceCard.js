@@ -71,7 +71,7 @@ const MaintenanceCard = ({ record, onEdit, onDelete, darkMode }) => {
         
         <CardContent className="flex-1 space-y-4 pt-4">
           <div className="flex items-start space-x-3">
-            <div className="mt-0.5 p-2 rounded-md bg-secondary text-secondary-foreground group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+            <div className="mt-0.5 p-2 rounded-md bg-surface text-secondary-foreground group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
               {getTypeIcon(record.type)}
             </div>
             <div className="flex-1">

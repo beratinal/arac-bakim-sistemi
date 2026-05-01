@@ -72,7 +72,7 @@ const Dashboard = ({ records, darkMode }) => {
                   <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">{item.label}</p>
                   <p className="text-xl font-bold mt-1">{item.value}</p>
                 </div>
-                <div className={`p-2 rounded-lg bg-muted ${item.color}`}>
+                <div className={`p-2 rounded-lg bg-surface ${item.color}`}>
                   <item.icon size={20} />
                 </div>
               </CardContent>
